@@ -5,7 +5,6 @@ import (
 	"flag"
 	"os"
 	"cyoa"
-	"encoding/json"
 )
 
 func main() {
@@ -17,12 +16,12 @@ func main() {
 	f, err := os.Open(*file)
 	if err != nil {
 		fmt.Println("Failed to open the JSON provided file")
+		panic(err)
 	}
 
-	d := json.NewDecoder(f)
-	var story cyoa.Story
-	if err := d.Decode(&story); err != nil {
-		fmt.Println("Failed to decode the JSON file")
+	story, err := cyoa.JsonStory(f)
+	if err != nil {
+		panic(err)
 	}
 
 	fmt.Printf("%+v\n", story)
